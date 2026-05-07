@@ -1,0 +1,51 @@
+int sensorPin = A0;
+
+int relayPin = 8;
+
+float temperature;
+
+void setup()
+{
+  pinMode(relayPin, OUTPUT);
+
+  digitalWrite(relayPin, LOW);
+
+  Serial.begin(9600);
+
+  Serial.println("Greenhouse Temperature Control System");
+}
+
+void loop()
+{
+  // Read TMP36 sensor value
+  int reading = analogRead(sensorPin);
+
+  // Convert analog value to voltage
+  float voltage = reading * (5.0 / 1023.0);
+
+  // Convert voltage to temperature
+  temperature = (voltage - 0.5) * 100;
+
+  // Display temperature
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" C");
+
+  // Fan ON condition
+  if (temperature > 30)
+  {
+    digitalWrite(relayPin, HIGH);
+
+    Serial.println("Fan ON");
+  }
+
+  // Fan OFF condition
+  else
+  {
+    digitalWrite(relayPin, LOW);
+
+    Serial.println("Fan OFF");
+  }
+
+  delay(1000);
+}
